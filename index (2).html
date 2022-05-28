@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="app">
+        <div class="todo-list">
+            <input type="text" class="inp"><button class="btn">add</button>  
+            <p id="error"></p>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+    
+      <!-- Modal content -->
+      <div class="modal-content">   
+         <input type="text" class="inp1">
+      </div>
+    
+    </div>
+    <script>
+    let todos =document.querySelector(".todo-list")
+    let btnAdd = document.querySelector(".btn")   
+    let inp = document.querySelector(".inp")
+    let inp1 = document.querySelector(".inp1")
+    let err = document.querySelector("#error")
+
+    var modal = document.getElementById("myModal");
+    var modalCtn = document.querySelector(".modal-content");
+
+    var span = document.getElementsByClassName("close")[0];
+
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    } 
+
+    inp.oninput = () => {
+        err.innerHTML = ""
+    }
+        
+    btnAdd.onclick = function() {
+        if(inp.value == "") {
+                err.innerHTML = '<span style="color: red">Поля не должно быть пустым!</span>'
+                return
+        }
+            
+            let todo = document.createElement("div")
+            let span = document.createElement("span")
+            span.innerHTML = inp.value
+            let btnDel = document.createElement("button")
+            btnDel.innerHTML = "delete"
+            let btnEdit = document.createElement("button")
+            btnEdit.innerHTML = "edit"
+            let inpIsCompleted = document.createElement("input")
+            inpIsCompleted.setAttribute("type", "checkbox") 
+            todo.classList.add("todo")
+
+            btnDel.onclick = () => {
+                todos.removeChild(todo)
+            }
+
+            btnEdit.onclick = () => {
+                let span1 = document.createElement('span')
+                let btn = document.createElement("button")
+                btn.classList.add("btn")
+                btn.innerText = 'edit'
+                btn.onclick = () => {
+                    span.innerText = inp1.value
+                    modalCtn.removeChild(btn)
+                    modalCtn.removeChild(span1)
+                    modal.style.display = "none";
+                }
+                span1.classList.add("close")
+                span1.innerHTML ="&times";
+                inp1.value = span.innerText
+                span1.onclick = () => {
+                    modalCtn.removeChild(btn)
+                    modalCtn.removeChild(span1)
+                    modal.style.display = "none";
+                }
+                modalCtn.appendChild(span1)
+                modalCtn.appendChild(btn)  
+                modal.style.display = "block";
+            }
+
+            inpIsCompleted.onclick = () => {
+                span.classList.toggle("line")
+            }   
+
+            todo.appendChild(span)
+            todo.appendChild(inpIsCompleted)
+            todo.appendChild(btnEdit)
+            todo.appendChild(btnDel)
+
+            todos.appendChild(todo)
+            inp.value = ""
+        }   
+
+    </script>   
+</body>
+</html>
